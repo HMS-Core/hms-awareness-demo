@@ -1,4 +1,4 @@
-## HUAWEI Awareness Kit Sample Code
+## HMS Awareness Demo
 
 ## Contents
 
