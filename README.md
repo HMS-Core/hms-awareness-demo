@@ -1,4 +1,4 @@
-## HUAWEI Awareness Kit Sample Code
+# HMS AwarenessKit Demo
 
 ## Contents
 
@@ -52,8 +52,6 @@ For details about Barrier APIs, please visit the [References of the Barrier APIs
 <img src="Screenshot_1.jpg" width=40% height=40% ><img src="Screenshot_2.jpg" width=40% height=40% ><img src="Screenshot_3.jpg" width=40% height=40% >
 
 
-
 ## License
 
 HUAWEI Awareness Kit sample is licensed under the [Apache License, version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
-
