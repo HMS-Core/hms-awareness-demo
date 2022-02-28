@@ -27,6 +27,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ScrollView;
+import android.content.pm.PackageManager;
+import android.Manifest;
+import androidx.core.app.ActivityCompat;
 
 import com.huawei.hms.awareness.codelab.R;
 import com.huawei.hms.awareness.codelab.Utils;
@@ -91,11 +94,13 @@ public class BarrierCombinationActivity extends AppCompatActivity implements Vie
             case R.id.add_combinedBarrier_time_bluetooth:
                 // When the Bluetooth car stereo is connected on a weekend, the barrier status is true.
                 int deviceType = 0;  // Value 0 indicates a Bluetooth car stereo.
-                AwarenessBarrier combinedTimeBluetoothBarrier = AwarenessBarrier.and(
-                        TimeBarrier.inTimeCategory(TimeBarrier.TIME_CATEGORY_WEEKEND),
-                        BluetoothBarrier.keep(deviceType, BluetoothStatus.CONNECTED));
-                Utils.addBarrier(this, COMBINED_TIME_BLUETOOTH_BARRIER_LABEL,
-                        combinedTimeBluetoothBarrier, mPendingIntent);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    AwarenessBarrier combinedTimeBluetoothBarrier = AwarenessBarrier.and(
+                            TimeBarrier.inTimeCategory(TimeBarrier.TIME_CATEGORY_WEEKEND),
+                            BluetoothBarrier.keep(deviceType, BluetoothStatus.CONNECTED));
+                    Utils.addBarrier(this, COMBINED_TIME_BLUETOOTH_BARRIER_LABEL,
+                            combinedTimeBluetoothBarrier, mPendingIntent);
+                }
                 break;
 
             case R.id.delete_barrier:
