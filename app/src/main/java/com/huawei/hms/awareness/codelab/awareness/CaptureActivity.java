@@ -22,6 +22,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
+import androidx.core.app.ActivityCompat;
+import android.Manifest;
+import android.content.pm.PackageManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -114,26 +117,28 @@ public class CaptureActivity extends AppCompatActivity implements View.OnClickLi
     private void getTimeCategories() {
         // Use getTimeCategories() to get the information about the current time of the user location.
         // Time information includes whether the current day is a workday or a holiday, and whether the current day is in the morning, afternoon, or evening, or at the night.
-        Awareness.getCaptureClient(this).getTimeCategories()
-                .addOnSuccessListener(new OnSuccessListener<TimeCategoriesResponse>() {
-                    @Override
-                    public void onSuccess(TimeCategoriesResponse timeCategoriesResponse) {
-                        TimeCategories timeCategories = timeCategoriesResponse.getTimeCategories();
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (int timeCode : timeCategories.getTimeCategories()) {
-                            stringBuilder.append(Constant.TIME_DESCRIPTION_MAP.get(timeCode));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Awareness.getCaptureClient(this).getTimeCategories()
+                    .addOnSuccessListener(new OnSuccessListener<TimeCategoriesResponse>() {
+                        @Override
+                        public void onSuccess(TimeCategoriesResponse timeCategoriesResponse) {
+                            TimeCategories timeCategories = timeCategoriesResponse.getTimeCategories();
+                            StringBuilder stringBuilder = new StringBuilder();
+                            for (int timeCode : timeCategories.getTimeCategories()) {
+                                stringBuilder.append(Constant.TIME_DESCRIPTION_MAP.get(timeCode));
+                            }
+                            mLogView.printLog(stringBuilder.toString());
+                            scrollToBottom();
                         }
-                        mLogView.printLog(stringBuilder.toString());
-                        scrollToBottom();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        mLogView.printLog("Failed to get time categories.");
-                        Log.e(TAG, "Failed to get time categories.", e);
-                    }
-                });
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(Exception e) {
+                            mLogView.printLog("Failed to get time categories.");
+                            Log.e(TAG, "Failed to get time categories.", e);
+                        }
+                    });
+        }
     }
 
     private void getHeadsetStatus() {
@@ -161,23 +166,25 @@ public class CaptureActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getLocation() {
-        Awareness.getCaptureClient(this).getLocation()
-                .addOnSuccessListener(new OnSuccessListener<LocationResponse>() {
-                    @Override
-                    public void onSuccess(LocationResponse locationResponse) {
-                        Location location = locationResponse.getLocation();
-                        mLogView.printLog("Longitude:" + location.getLongitude()
-                                + ",Latitude:" + location.getLatitude());
-                        scrollToBottom();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        mLogView.printLog("Failed to get the location.");
-                        Log.e(TAG, "Failed to get the location.", e);
-                    }
-                });
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Awareness.getCaptureClient(this).getLocation()
+                    .addOnSuccessListener(new OnSuccessListener<LocationResponse>() {
+                        @Override
+                        public void onSuccess(LocationResponse locationResponse) {
+                            Location location = locationResponse.getLocation();
+                            mLogView.printLog("Longitude:" + location.getLongitude()
+                                    + ",Latitude:" + location.getLatitude());
+                            scrollToBottom();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(Exception e) {
+                            mLogView.printLog("Failed to get the location.");
+                            Log.e(TAG, "Failed to get the location.", e);
+                        }
+                    });
+        }
     }
 
     private void getBehaviorStatus() {
@@ -223,33 +230,35 @@ public class CaptureActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getWeatherStatus() {
-        Awareness.getCaptureClient(this).getWeatherByDevice()
-                .addOnSuccessListener(new OnSuccessListener<WeatherStatusResponse>() {
-                    @Override
-                    public void onSuccess(WeatherStatusResponse weatherStatusResponse) {
-                        WeatherStatus weatherStatus = weatherStatusResponse.getWeatherStatus();
-                        WeatherSituation weatherSituation = weatherStatus.getWeatherSituation();
-                        Situation situation = weatherSituation.getSituation();
-                        // For more weather information, please refer to the development guide.
-                        String weatherInfoStr = "City:" + weatherSituation.getCity().getName() + "\n" +
-                                "Weather id is " + situation.getWeatherId() + "\n" +
-                                "CN Weather id is " + situation.getCnWeatherId() + "\n" +
-                                "Temperature is " + situation.getTemperatureC() + "℃" +
-                                "," + situation.getTemperatureF() + "℉" + "\n" +
-                                "Wind speed is " + situation.getWindSpeed() + "km/h" + "\n" +
-                                "Wind direction is " + situation.getWindDir() + "\n" +
-                                "Humidity is " + situation.getHumidity() + "%";
-                        mLogView.printLog(weatherInfoStr);
-                        scrollToBottom();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        mLogView.printLog("Failed to get weather information.");
-                        Log.e(TAG, "Failed to get weather information.");
-                    }
-                });
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Awareness.getCaptureClient(this).getWeatherByDevice()
+                    .addOnSuccessListener(new OnSuccessListener<WeatherStatusResponse>() {
+                        @Override
+                        public void onSuccess(WeatherStatusResponse weatherStatusResponse) {
+                            WeatherStatus weatherStatus = weatherStatusResponse.getWeatherStatus();
+                            WeatherSituation weatherSituation = weatherStatus.getWeatherSituation();
+                            Situation situation = weatherSituation.getSituation();
+                            // For more weather information, please refer to the development guide.
+                            String weatherInfoStr = "City:" + weatherSituation.getCity().getName() + "\n" +
+                                    "Weather id is " + situation.getWeatherId() + "\n" +
+                                    "CN Weather id is " + situation.getCnWeatherId() + "\n" +
+                                    "Temperature is " + situation.getTemperatureC() + "℃" +
+                                    "," + situation.getTemperatureF() + "℉" + "\n" +
+                                    "Wind speed is " + situation.getWindSpeed() + "km/h" + "\n" +
+                                    "Wind direction is " + situation.getWindDir() + "\n" +
+                                    "Humidity is " + situation.getHumidity() + "%";
+                            mLogView.printLog(weatherInfoStr);
+                            scrollToBottom();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(Exception e) {
+                            mLogView.printLog("Failed to get weather information.");
+                            Log.e(TAG, "Failed to get weather information.");
+                        }
+                    });
+        }
     }
 
     private void getBluetoothStatus() {
@@ -280,37 +289,39 @@ public class CaptureActivity extends AppCompatActivity implements View.OnClickLi
         String type = "sample type";
         byte[] content = new byte[]{'s', 'a', 'm', 'p', 'l', 'e'};
         BeaconStatus.Filter filter = BeaconStatus.Filter.match(namespace, type, content);
-        Awareness.getCaptureClient(this).getBeaconStatus(filter)
-                .addOnSuccessListener(new OnSuccessListener<BeaconStatusResponse>() {
-                    @Override
-                    public void onSuccess(BeaconStatusResponse beaconStatusResponse) {
-                        List<BeaconStatus.BeaconData> beaconDataList = beaconStatusResponse
-                                .getBeaconStatus().getBeaconData();
-                        if (beaconDataList != null && beaconDataList.size() != 0) {
-                            int i = 1;
-                            StringBuilder builder = new StringBuilder();
-                            for (BeaconStatus.BeaconData beaconData : beaconDataList) {
-                                builder.append("Beacon Data ").append(i);
-                                builder.append(" namespace:").append(beaconData.getNamespace());
-                                builder.append(",type:").append(beaconData.getType());
-                                builder.append(",content:").append(Arrays.toString(beaconData.getContent()));
-                                builder.append(". ");
-                                i++;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Awareness.getCaptureClient(this).getBeaconStatus(filter)
+                    .addOnSuccessListener(new OnSuccessListener<BeaconStatusResponse>() {
+                        @Override
+                        public void onSuccess(BeaconStatusResponse beaconStatusResponse) {
+                            List<BeaconStatus.BeaconData> beaconDataList = beaconStatusResponse
+                                    .getBeaconStatus().getBeaconData();
+                            if (beaconDataList != null && beaconDataList.size() != 0) {
+                                int i = 1;
+                                StringBuilder builder = new StringBuilder();
+                                for (BeaconStatus.BeaconData beaconData : beaconDataList) {
+                                    builder.append("Beacon Data ").append(i);
+                                    builder.append(" namespace:").append(beaconData.getNamespace());
+                                    builder.append(",type:").append(beaconData.getType());
+                                    builder.append(",content:").append(Arrays.toString(beaconData.getContent()));
+                                    builder.append(". ");
+                                    i++;
+                                }
+                                mLogView.printLog(builder.toString());
+                            } else {
+                                mLogView.printLog("No beacon matches filters nearby.");
                             }
-                            mLogView.printLog(builder.toString());
-                        } else {
-                            mLogView.printLog("No beacon matches filters nearby.");
+                            scrollToBottom();
                         }
-                        scrollToBottom();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        mLogView.printLog("Failed to get beacon status.");
-                        Log.e(TAG, "Failed to get beacon status.", e);
-                    }
-                });
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(Exception e) {
+                            mLogView.printLog("Failed to get beacon status.");
+                            Log.e(TAG, "Failed to get beacon status.", e);
+                        }
+                    });
+        }
     }
 
     private void scrollToBottom() {
