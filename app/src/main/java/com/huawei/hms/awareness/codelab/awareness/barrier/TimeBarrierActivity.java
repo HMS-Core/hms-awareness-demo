@@ -27,6 +27,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ScrollView;
+import androidx.core.app.ActivityCompat;
+import android.content.pm.PackageManager;
+import android.Manifest;
 
 import com.huawei.hms.awareness.codelab.R;
 import com.huawei.hms.awareness.codelab.Utils;
@@ -83,17 +86,21 @@ public class TimeBarrierActivity extends AppCompatActivity implements View.OnCli
         long oneHourMilliSecond = 60 * 60 * 1000L;
         switch (v.getId()) {
             case R.id.add_timeBarrier_inSunriseOrSunsetPeriod:
-                AwarenessBarrier sunsetBarrier = TimeBarrier.inSunriseOrSunsetPeriod(TimeBarrier.SUNSET_CODE,
-                        -oneHourMilliSecond, oneHourMilliSecond);
-                Utils.addBarrier(this, IN_SUNRISE_OR_SUNSET_PERIOD_BARRIER_LABEL,
-                        sunsetBarrier, mPendingIntent);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    AwarenessBarrier sunsetBarrier = TimeBarrier.inSunriseOrSunsetPeriod(TimeBarrier.SUNSET_CODE,
+                            -oneHourMilliSecond, oneHourMilliSecond);
+                    Utils.addBarrier(this, IN_SUNRISE_OR_SUNSET_PERIOD_BARRIER_LABEL,
+                            sunsetBarrier, mPendingIntent);
+                }
                 break;
 
             case R.id.add_timeBarrier_duringPeriodOfDay:
-                AwarenessBarrier periodOfDayBarrier = TimeBarrier.duringPeriodOfDay(TimeZone.getDefault(),
-                        11 * oneHourMilliSecond, 12 * oneHourMilliSecond);
-                Utils.addBarrier(this, DURING_PERIOD_OF_DAT_BARRIER_LABEL, periodOfDayBarrier,
-                        mPendingIntent);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    AwarenessBarrier periodOfDayBarrier = TimeBarrier.duringPeriodOfDay(TimeZone.getDefault(),
+                            11 * oneHourMilliSecond, 12 * oneHourMilliSecond);
+                    Utils.addBarrier(this, DURING_PERIOD_OF_DAT_BARRIER_LABEL, periodOfDayBarrier,
+                            mPendingIntent);
+                }
                 break;
 
             case R.id.add_timeBarrier_duringTimePeriod:
@@ -106,15 +113,19 @@ public class TimeBarrierActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.add_timeBarrier_duringPeriodOfWeek:
-                AwarenessBarrier periodOfWeekBarrier = TimeBarrier.duringPeriodOfWeek(TimeBarrier.MONDAY_CODE,
-                        TimeZone.getDefault(), 9 * oneHourMilliSecond, 10 * oneHourMilliSecond);
-                Utils.addBarrier(this, DURING_PERIOD_OF_WEEK_BARRIER_LABEL,
-                        periodOfWeekBarrier, mPendingIntent);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    AwarenessBarrier periodOfWeekBarrier = TimeBarrier.duringPeriodOfWeek(TimeBarrier.MONDAY_CODE,
+                            TimeZone.getDefault(), 9 * oneHourMilliSecond, 10 * oneHourMilliSecond);
+                    Utils.addBarrier(this, DURING_PERIOD_OF_WEEK_BARRIER_LABEL,
+                            periodOfWeekBarrier, mPendingIntent);
+                }
                 break;
 
             case R.id.add_timeBarrier_inTimeCategory:
-                AwarenessBarrier inTimeCategoryBarrier = TimeBarrier.inTimeCategory(TimeBarrier.TIME_CATEGORY_WEEKEND);
-                Utils.addBarrier(this, IN_TIME_CATEGORY_LABEL, inTimeCategoryBarrier, mPendingIntent);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    AwarenessBarrier inTimeCategoryBarrier = TimeBarrier.inTimeCategory(TimeBarrier.TIME_CATEGORY_WEEKEND);
+                    Utils.addBarrier(this, IN_TIME_CATEGORY_LABEL, inTimeCategoryBarrier, mPendingIntent);
+                }
                 break;
 
             case R.id.delete_barrier:
