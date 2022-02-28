@@ -91,13 +91,17 @@ public class BeaconBarrierActivity extends AppCompatActivity implements View.OnC
                 break;
 
             case R.id.add_beaconBarrier_keep:
-                AwarenessBarrier keepBeaconBarrier = BeaconBarrier.keep(filter);
-                Utils.addBarrier(this, KEEP_BARRIER_LABEL, keepBeaconBarrier, mPendingIntent);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    AwarenessBarrier keepBeaconBarrier = BeaconBarrier.keep(filter);
+                    Utils.addBarrier(this, KEEP_BARRIER_LABEL, keepBeaconBarrier, mPendingIntent);
+                }
                 break;
 
             case R.id.add_beaconBarrier_missed:
-                AwarenessBarrier missedBeaconBarrier = BeaconBarrier.missed(filter);
-                Utils.addBarrier(this, MISSED_BARRIER_LABEL, missedBeaconBarrier, mPendingIntent);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    AwarenessBarrier missedBeaconBarrier = BeaconBarrier.missed(filter);
+                    Utils.addBarrier(this, MISSED_BARRIER_LABEL, missedBeaconBarrier, mPendingIntent);
+                }
                 break;
 
             case R.id.delete_barrier:
