@@ -27,6 +27,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ScrollView;
+import androidx.core.app.ActivityCompat;
+import android.content.pm.PackageManager;
+import android.Manifest;
 
 import com.huawei.hms.awareness.codelab.R;
 import com.huawei.hms.awareness.codelab.Utils;
@@ -80,16 +83,22 @@ public class LocationBarrierActivity extends AppCompatActivity implements View.O
 
         switch (v.getId()) {
             case R.id.add_locationBarrier_enter:
-                AwarenessBarrier enterBarrier = LocationBarrier.enter(latitude, longitude, radius);
-                Utils.addBarrier(this, ENTER_BARRIER_LABEL, enterBarrier, mPendingIntent);
+                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    AwarenessBarrier enterBarrier = LocationBarrier.enter(latitude, longitude, radius);
+                    Utils.addBarrier(this, ENTER_BARRIER_LABEL, enterBarrier, mPendingIntent);
+                }
                 break;
             case R.id.add_locationBarrier_stay:
-                AwarenessBarrier stayBarrier = LocationBarrier.stay(latitude, longitude, radius, mTimeOfDuration);
-                Utils.addBarrier(this, STAY_BARRIER_LABEL, stayBarrier, mPendingIntent);
+               if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    AwarenessBarrier stayBarrier = LocationBarrier.stay(latitude, longitude, radius, mTimeOfDuration);
+                    Utils.addBarrier(this, STAY_BARRIER_LABEL, stayBarrier, mPendingIntent);
+                }
                 break;
             case R.id.add_locationBarrier_exit:
-                AwarenessBarrier exitBarrier = LocationBarrier.exit(latitude, longitude, radius);
-                Utils.addBarrier(this, EXIT_BARRIER_LABEL, exitBarrier, mPendingIntent);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    AwarenessBarrier exitBarrier = LocationBarrier.exit(latitude, longitude, radius);
+                    Utils.addBarrier(this, EXIT_BARRIER_LABEL, exitBarrier, mPendingIntent);
+                }
                 break;
             case R.id.delete_barrier:
                 Utils.deleteBarrier(this, mPendingIntent);
