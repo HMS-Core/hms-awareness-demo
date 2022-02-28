@@ -27,6 +27,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ScrollView;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import androidx.core.app.ActivityCompat;
 
 import com.huawei.hms.awareness.codelab.R;
 import com.huawei.hms.awareness.codelab.Utils;
@@ -81,8 +84,10 @@ public class BeaconBarrierActivity extends AppCompatActivity implements View.OnC
 
         switch (v.getId()) {
             case R.id.add_beaconBarrier_discover:
-                AwarenessBarrier discoverBeaconBarrier = BeaconBarrier.discover(filter);
-                Utils.addBarrier(this, DISCOVER_BARRIER_LABEL, discoverBeaconBarrier, mPendingIntent);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    AwarenessBarrier discoverBeaconBarrier = BeaconBarrier.discover(filter);
+                    Utils.addBarrier(this, DISCOVER_BARRIER_LABEL, discoverBeaconBarrier, mPendingIntent);
+                }
                 break;
 
             case R.id.add_beaconBarrier_keep:
