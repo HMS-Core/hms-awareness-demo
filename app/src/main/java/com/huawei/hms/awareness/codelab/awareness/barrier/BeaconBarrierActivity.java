@@ -58,7 +58,7 @@ public class BeaconBarrierActivity extends AppCompatActivity implements View.OnC
         Intent intent = new Intent(barrierReceiverAction);
         // You can also create PendingIntent with getActivity() or getService().
         // This depends on what action you want Awareness Kit to trigger when the barrier status changes.
-        mPendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mPendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
 
         // Register a broadcast receiver to receive the broadcast sent by Awareness Kit when the barrier status changes.
         mBarrierReceiver = new BeaconBarrierReceiver();
@@ -130,6 +130,10 @@ public class BeaconBarrierActivity extends AppCompatActivity implements View.OnC
             BarrierStatus barrierStatus = BarrierStatus.extract(intent);
             String label = barrierStatus.getBarrierLabel();
             int barrierPresentStatus = barrierStatus.getPresentStatus();
+            if (label == null) {
+                mLogView.printLog("label is null.");
+                return;
+            }
             switch (label) {
                 case DISCOVER_BARRIER_LABEL:
                     if (barrierPresentStatus == BarrierStatus.TRUE) {
