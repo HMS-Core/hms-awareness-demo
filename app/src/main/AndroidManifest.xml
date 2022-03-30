@@ -6,7 +6,9 @@
     <uses-permission android:name="com.huawei.hms.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
         android:allowBackup="false"
@@ -15,22 +17,44 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".awareness.barrier.BarrierCombinationActivity" />
-        <activity android:name=".awareness.barrier.BluetoothBarrierActivity" />
-        <activity android:name=".awareness.barrier.BeaconBarrierActivity" />
-        <activity android:name=".awareness.barrier.AmbientLightBarrierActivity" />
-        <activity android:name=".awareness.barrier.TimeBarrierActivity" />
-        <activity android:name=".awareness.barrier.BehaviorBarrierActivity" />
-        <activity android:name=".awareness.barrier.LocationBarrierActivity" />
-        <activity android:name=".awareness.barrier.HeadsetBarrierActivity" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".awareness.barrier.BarrierCombinationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".awareness.barrier.BluetoothBarrierActivity"
+            android:exported="false" />
+        <activity
+            android:name=".awareness.barrier.BeaconBarrierActivity"
+            android:exported="false" />
+        <activity
+            android:name=".awareness.barrier.AmbientLightBarrierActivity"
+            android:exported="false" />
+        <activity
+            android:name=".awareness.barrier.TimeBarrierActivity"
+            android:exported="false" />
+        <activity
+            android:name=".awareness.barrier.BehaviorBarrierActivity"
+            android:exported="false" />
+        <activity
+            android:name=".awareness.barrier.LocationBarrierActivity"
+            android:exported="false" />
+        <activity
+            android:name=".awareness.barrier.HeadsetBarrierActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".awareness.BarrierActivity" />
-        <activity android:name=".awareness.CaptureActivity" />
+        <activity
+            android:name=".awareness.BarrierActivity"
+            android:exported="false" />
+        <activity
+            android:name=".awareness.CaptureActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
